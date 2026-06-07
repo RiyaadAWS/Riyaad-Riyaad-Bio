@@ -27,7 +27,9 @@ import {
   Server, 
   Brain, 
   ArrowRight,
-  RefreshCw
+  RefreshCw,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { contactInfo, techStack, educationList, workExperience, keyProjects, referencesList } from './data';
@@ -38,6 +40,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'experience' | 'skills' | 'projects' | 'education' | 'references'>('experience');
   const [selectedSubRole, setSelectedSubRole] = useState<number>(0);
   
+  // Theme Toggle: Defaults to true (Dark Ambient)
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+
   // Chatbot State
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -164,15 +169,27 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
+    <div className={`min-h-screen transition-colors duration-300 flex flex-col font-sans ${
+      isDarkMode 
+        ? 'bg-slate-950 text-slate-100 selection:bg-amber-500 selection:text-slate-950' 
+        : 'bg-slate-50 text-slate-800 selection:bg-amber-500 selection:text-slate-950'
+    }`}>
       
       {/* Header Profile Cover Banner */}
-      <header className="relative bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border-b border-slate-800 overflow-hidden">
-        {/* Abstract AWS Orange Ambient Background Glow */}
-        <div className="absolute right-0 top-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute left-1/4 bottom-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+      <header className={`relative transition-colors duration-300 border-b overflow-hidden ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border-slate-800' 
+          : 'bg-gradient-to-r from-slate-100 via-white to-slate-50 border-slate-200'
+      }`}>
+        {/* Glow Effects (Only visible on dark mode for abstract high design appeal) */}
+        {isDarkMode && (
+          <>
+            <div className="absolute right-0 top-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute left-1/4 bottom-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+          </>
+        )}
 
-        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 relative">
+        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 relative animate-fade-in">
           <div className="flex flex-col md:flex-row items-center gap-8 justify-between">
             
             {/* Left Portion: Profile Avatar and Details */}
@@ -180,23 +197,64 @@ export default function App() {
               {/* Professional Initials Avatar Badge and Ring */}
               <div className="relative flex-shrink-0 group">
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 opacity-75 blur group-hover:opacity-100 transition duration-300" />
-                <div className="relative w-24 h-24 bg-slate-900 rounded-full border-2 border-slate-800 flex items-center justify-center text-amber-500 font-display font-bold text-3xl">
+                <div className={`relative w-24 h-24 rounded-full border-2 flex items-center justify-center text-amber-500 font-display font-bold text-3xl transition-colors duration-350 ${
+                  isDarkMode 
+                    ? 'bg-slate-900 border-slate-800' 
+                    : 'bg-white border-slate-200'
+                }`}>
                   RR
                 </div>
               </div>
 
               <div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <h1 className="text-3xl font-bold tracking-tight font-display text-white">Riyaad Ryklief</h1>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20 max-w-max mx-auto sm:mx-0">
-                    8 Years AWS Specialist
-                  </span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap justify-center sm:justify-start">
+                  <h1 className={`text-3xl font-bold tracking-tight font-display transition-colors duration-300 ${
+                    isDarkMode ? 'text-white' : 'text-slate-900'
+                  }`}>
+                    Riyaad Ryklief
+                  </h1>
+                  
+                  <div className="flex items-center gap-2 max-w-max mx-auto sm:mx-0">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                      8 Years AWS Specialist
+                    </span>
+
+                    {/* Theme Toggle Button */}
+                    <button
+                      onClick={() => setIsDarkMode(!isDarkMode)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-mono font-bold tracking-tight transition-all duration-300 shadow-sm ${
+                        isDarkMode 
+                          ? 'bg-slate-905 border-slate-750 text-amber-500 hover:border-amber-500 hover:bg-slate-800' 
+                          : 'bg-white border-slate-300 text-slate-700 hover:border-amber-500 hover:bg-slate-100'
+                      }`}
+                      id="theme-toggle-btn"
+                      title="Toggle high-contrast light mode / ambient dark mode"
+                      aria-label="Toggle visual theme preference"
+                    >
+                      {isDarkMode ? (
+                        <>
+                          <Sun className="w-3 h-3 text-amber-500 animate-pulse" />
+                          <span>LIGHT MODE</span>
+                        </>
+                      ) : (
+                        <>
+                          <Moon className="w-3 h-3 text-indigo-600" />
+                          <span>DARK MODE</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
-                <p className="text-lg text-slate-300 font-medium mt-1">
+                
+                <p className={`text-lg font-medium mt-1 transition-colors duration-300 ${
+                  isDarkMode ? 'text-slate-300' : 'text-slate-700'
+                }`}>
                   Technical Support Specialist | Applications Developer
                 </p>
                 
-                <div className="mt-3 flex flex-wrap justify-center sm:justify-start gap-y-2 gap-x-4 text-xs text-slate-400 font-mono">
+                <div className={`mt-3 flex flex-wrap justify-center sm:justify-start gap-y-2 gap-x-4 text-xs font-mono transition-colors duration-300 ${
+                  isDarkMode ? 'text-slate-400' : 'text-slate-550'
+                }`}>
                   <span className="flex items-center gap-1.5">
                     <MapPin className="w-3.5 h-3.5 text-amber-500" />
                     Cape Town, South Africa
@@ -214,7 +272,11 @@ export default function App() {
               <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
                 <button 
                   onClick={() => handleCopy(contactInfo.email, 'Email')}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-sm text-slate-200 transition"
+                  className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm transition-all duration-200 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-200' 
+                      : 'bg-white border-slate-250 hover:border-slate-400 hover:bg-slate-100 text-slate-705 shadow-sm'
+                  }`}
                   id="btn-copy-email"
                 >
                   {copiedText === 'Email' ? <Check className="w-4 h-4 text-emerald-500" /> : <Mail className="w-4 h-4 text-amber-500" />}
@@ -223,7 +285,11 @@ export default function App() {
 
                 <button 
                   onClick={() => handleCopy(contactInfo.phones[0], 'Phone')}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-sm text-slate-200 transition"
+                  className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm transition-all duration-200 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-200' 
+                      : 'bg-white border-slate-250 hover:border-slate-400 hover:bg-slate-100 text-slate-705 shadow-sm'
+                  }`}
                   id="btn-copy-phone"
                 >
                   {copiedText === 'Phone' ? <Check className="w-4 h-4 text-emerald-500" /> : <Phone className="w-4 h-4 text-amber-500" />}
@@ -234,7 +300,11 @@ export default function App() {
                   href={contactInfo.linkedin} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-sm text-slate-200 transition"
+                  className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm transition-all duration-200 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-200' 
+                      : 'bg-white border-slate-250 hover:border-slate-400 hover:bg-slate-100 text-slate-705 shadow-sm'
+                  }`}
                   id="link-linkedin"
                 >
                   <Linkedin className="w-4 h-4 text-amber-500" />
@@ -245,7 +315,11 @@ export default function App() {
                   href={contactInfo.github} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-sm text-slate-200 transition"
+                  className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm transition-all duration-200 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-200' 
+                      : 'bg-white border-slate-250 hover:border-slate-400 hover:bg-slate-100 text-slate-705 shadow-sm'
+                  }`}
                   id="link-github"
                 >
                   <Github className="w-4 h-4 text-amber-500" />
@@ -260,7 +334,7 @@ export default function App() {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 5 }}
-                    className="text-xs text-center text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-1 rounded-md"
+                    className="text-xs text-center text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 py-1 rounded-md font-medium"
                   >
                     Successfully copied {copiedText} to clipboard!
                   </motion.div>
@@ -279,16 +353,26 @@ export default function App() {
         <section className="lg:col-span-7 space-y-6 flex flex-col" id="resume-panel">
           
           {/* Executive Overview Highlight */}
-          <div className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden">
+          <div className={`border rounded-2xl p-6 relative overflow-hidden transition-all duration-300 ${
+            isDarkMode 
+              ? 'bg-slate-900/50 border-slate-800/80 backdrop-blur-sm' 
+              : 'bg-white border-slate-300/80 shadow-sm'
+          }`}>
             <div className="absolute left-0 top-0 h-full w-1.5 bg-gradient-to-b from-amber-500 to-amber-600" />
             <span className="text-xs font-mono text-amber-500 font-semibold tracking-wider uppercase mb-2 block">Executive Profile</span>
-            <p className="text-sm leading-relaxed text-slate-300">
+            <p className={`text-sm leading-relaxed transition-colors duration-350 ${
+              isDarkMode ? 'text-slate-300' : 'text-slate-700'
+            }`}>
               With 8 years at AWS, I've built extensive expertise in enterprise collaboration and business intelligence platforms, specializing in Amazon Chime, QuickSight, and telecom services. My Computer Science credentials with a focus in Applications Development complements my hands-on AWS experience, where I've delivered comprehensive technical support across all tiers.
             </p>
           </div>
 
           {/* Interactive Resume Navigation Tabs */}
-          <div className="flex border-b border-slate-800 overflow-x-auto whitespace-nowrap bg-slate-900/30 p-1.5 rounded-xl border">
+          <div className={`flex overflow-x-auto whitespace-nowrap p-1.5 rounded-xl border transition-colors duration-300 ${
+            isDarkMode 
+              ? 'bg-slate-900/30 border-slate-800' 
+              : 'bg-slate-200/60 border-slate-300/80'
+          }`}>
             {(['experience', 'skills', 'projects', 'education', 'references'] as const).map(tab => (
               <button
                 key={tab}
@@ -310,7 +394,9 @@ export default function App() {
                 className={`flex-1 min-w-[90px] text-center px-4 py-2.5 rounded-lg text-xs font-semibold tracking-medium transition uppercase font-display ${
                   activeTab === tab 
                     ? 'bg-amber-500 text-slate-950 shadow-md font-bold' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                    : isDarkMode 
+                      ? 'text-slate-400 hover:text-white hover:bg-slate-800/50' 
+                      : 'text-slate-600 hover:text-slate-950 hover:bg-slate-300/50 font-medium'
                 }`}
                 id={`tab-select-${tab}`}
               >
@@ -332,25 +418,41 @@ export default function App() {
                   exit={{ opacity: 0, y: -10 }}
                   className="space-y-6"
                 >
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800 pb-4 mb-6">
+                  <div className={`border rounded-2xl p-6 relative transition-colors duration-300 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800' 
+                      : 'bg-white border-slate-300/80 shadow-md'
+                  }`}>
+                    <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 mb-6 ${
+                      isDarkMode ? 'border-slate-800' : 'border-slate-200'
+                    }`}>
                       <div>
-                        <h3 className="text-lg font-bold text-white tracking-tight">{workExperience[0].company}</h3>
+                        <h3 className={`text-lg font-bold tracking-tight ${
+                          isDarkMode ? 'text-white' : 'text-slate-905'
+                        }`}>{workExperience[0].company}</h3>
                         <p className="text-amber-500 font-medium text-sm font-mono mt-0.5">{workExperience[0].role}</p>
                       </div>
-                      <span className="inline-flex items-center gap-1 bg-slate-800 px-3 py-1 rounded-full text-xs text-slate-300 font-mono mt-2 sm:mt-0 border border-slate-700">
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono mt-2 sm:mt-0 border ${
+                        isDarkMode 
+                          ? 'bg-slate-800 text-slate-300 border-slate-700' 
+                          : 'bg-slate-100 text-slate-700 border-slate-300 font-medium'
+                      }`}>
                         <Calendar className="w-3.5 h-3.5 text-amber-500" />
                         {workExperience[0].period}
                       </span>
                     </div>
 
-                    <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                    <p className={`text-sm leading-relaxed mb-6 ${
+                      isDarkMode ? 'text-slate-300' : 'text-slate-700'
+                    }`}>
                       {workExperience[0].description}
                     </p>
 
                     {/* AWS Specialties Grid selector */}
                     <div className="space-y-4">
-                      <h4 className="text-xs font-mono text-slate-400 tracking-wider uppercase mb-1">
+                      <h4 className={`text-xs font-mono tracking-wider uppercase mb-1 ${
+                        isDarkMode ? 'text-slate-400' : 'text-slate-600 font-bold'
+                      }`}>
                         Select AWS Domain Specialty
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
@@ -360,8 +462,10 @@ export default function App() {
                             onClick={() => setSelectedSubRole(idx)}
                             className={`px-4 py-3 rounded-xl border text-left transition flex items-center justify-between ${
                               selectedSubRole === idx 
-                                ? 'bg-amber-500/10 border-amber-500 text-white' 
-                                : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:bg-slate-900'
+                                ? 'bg-amber-500/10 border-amber-500 text-amber-600 dark:text-amber-500 font-bold' 
+                                : isDarkMode 
+                                  ? 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:bg-slate-900' 
+                                  : 'bg-slate-50 border-slate-300 text-slate-700 hover:border-slate-400 hover:bg-slate-100 shadow-sm'
                             }`}
                             id={`subrole-tab-${idx}`}
                           >
@@ -372,22 +476,34 @@ export default function App() {
                       </div>
 
                       {/* Display Selected Specialty bullets */}
-                      <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-5 mt-4 min-h-[220px] shadow-inner">
-                        <div className="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+                      <div className={`border rounded-xl p-5 mt-4 min-h-[220px] transition-all duration-300 ${
+                        isDarkMode 
+                          ? 'bg-slate-950/80 border-slate-800 shadow-inner' 
+                          : 'bg-slate-50 border-slate-300/85 shadow-inner'
+                      }`}>
+                        <div className={`flex items-center justify-between mb-3 border-b pb-2 ${
+                          isDarkMode ? 'border-slate-800' : 'border-slate-200'
+                        }`}>
                           <span className="text-xs font-mono text-amber-500 font-semibold uppercase">
                             AWS Core Operations: {workExperience[0].subRoles[selectedSubRole].title}
                           </span>
                           <button 
                             onClick={() => handleSendMessage(undefined, `Tell me more about Riyaad's experience with AWS ${workExperience[0].subRoles[selectedSubRole].title}`)}
-                            className="text-slate-400 hover:text-amber-500 transition flex items-center gap-1 text-[11px] bg-slate-900 border border-slate-800 px-2 py-1 rounded-md"
+                            className={`transition-all duration-200 flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md border ${
+                              isDarkMode 
+                                ? 'text-slate-400 hover:text-amber-500 bg-slate-900 border-slate-800' 
+                                : 'text-slate-705 hover:text-amber-600 bg-white border-slate-300 shadow-sm font-semibold'
+                            }`}
                           >
                             <Sparkles className="w-3 h-3 text-amber-500" />
                             <span>Ask Assistant</span>
                           </button>
                         </div>
-                        <ul className="space-y-3.5 text-sm text-slate-300">
+                        <ul className="space-y-3.5 text-sm">
                           {workExperience[0].subRoles[selectedSubRole].bullets.map((bullet, bIdx) => (
-                            <li key={bIdx} className="flex gap-2.5 items-start">
+                            <li key={bIdx} className={`flex gap-2.5 items-start ${
+                              isDarkMode ? 'text-slate-300' : 'text-slate-700'
+                            }`}>
                               <span className="text-amber-500 mt-1 flex-shrink-0 text-base">▪</span>
                               <span>{bullet}</span>
                             </li>
@@ -408,8 +524,14 @@ export default function App() {
                   exit={{ opacity: 0, y: -10 }}
                   className="space-y-6"
                 >
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                    <h3 className="text-base font-bold text-white mb-6 uppercase tracking-wider font-display flex items-center gap-2">
+                  <div className={`border rounded-2xl p-6 transition-colors duration-300 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800' 
+                      : 'bg-white border-slate-300 shadow-md'
+                  }`}>
+                    <h3 className={`text-base font-bold mb-6 uppercase tracking-wider font-display flex items-center gap-2 ${
+                      isDarkMode ? 'text-white' : 'text-slate-900'
+                    }`}>
                       <Layers className="w-5 h-5 text-amber-500" />
                       Technical Stack Matrix
                     </h3>
@@ -417,8 +539,12 @@ export default function App() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       
                       {/* Frontend Column */}
-                      <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                        <span className="text-xs font-mono text-amber-500 uppercase tracking-widest font-semibold block mb-3 pb-2 border-b border-slate-800/80 flex items-center justify-between">
+                      <div className={`p-4 rounded-xl border transition-colors duration-300 ${
+                        isDarkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-100 border-slate-250'
+                      }`}>
+                        <span className={`text-xs font-mono text-amber-550 uppercase tracking-widest font-bold block mb-3 pb-2 border-b flex items-center justify-between ${
+                          isDarkMode ? 'border-slate-800/80 text-amber-500' : 'border-slate-300 text-amber-600'
+                        }`}>
                           Frontend
                           <Layers className="w-3.5 h-3.5 text-amber-500" />
                         </span>
@@ -427,18 +553,28 @@ export default function App() {
                             <div 
                               key={item.name} 
                               onClick={() => handleSendMessage(undefined, `What projects or experience does Riyaad have using ${item.name}?`)}
-                              className="group p-2.5 bg-slate-900 rounded-lg hover:border-amber-500 border border-slate-800 cursor-pointer flex justify-between items-center transition"
+                              className={`group p-2.5 rounded-lg border cursor-pointer flex justify-between items-center transition-all ${
+                                isDarkMode 
+                                  ? 'bg-slate-900 border-slate-800 hover:border-amber-500' 
+                                  : 'bg-white border-slate-300 hover:border-amber-550 hover:shadow-sm'
+                              }`}
                             >
-                              <span className="text-sm text-slate-200 group-hover:text-amber-500 font-medium">{item.name}</span>
-                              <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-amber-500 transition-opacity" />
+                              <span className={`text-sm font-semibold group-hover:text-amber-550 transition-colors ${
+                                isDarkMode ? 'text-slate-200' : 'text-slate-800'
+                              }`}>{item.name}</span>
+                              <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-amber-550 transition-opacity" />
                             </div>
                           ))}
                         </div>
                       </div>
 
                       {/* Backend Column */}
-                      <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                        <span className="text-xs font-mono text-amber-500 uppercase tracking-widest font-semibold block mb-3 pb-2 border-b border-slate-800/80 flex items-center justify-between">
+                      <div className={`p-4 rounded-xl border transition-colors duration-300 ${
+                        isDarkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-100 border-slate-250'
+                      }`}>
+                        <span className={`text-xs font-mono text-amber-550 uppercase tracking-widest font-bold block mb-3 pb-2 border-b flex items-center justify-between ${
+                          isDarkMode ? 'border-slate-800/80 text-amber-500' : 'border-slate-300 text-amber-600'
+                        }`}>
                           Backend
                           <Server className="w-3.5 h-3.5 text-amber-500" />
                         </span>
@@ -447,18 +583,28 @@ export default function App() {
                             <div 
                               key={item.name} 
                               onClick={() => handleSendMessage(undefined, `Can you tell me about Riyaad's experienced backend workflows in ${item.name}?`)}
-                              className="group p-2.5 bg-slate-900 rounded-lg hover:border-amber-500 border border-slate-800 cursor-pointer flex justify-between items-center transition"
+                              className={`group p-2.5 rounded-lg border cursor-pointer flex justify-between items-center transition-all ${
+                                isDarkMode 
+                                  ? 'bg-slate-900 border-slate-800 hover:border-amber-500' 
+                                  : 'bg-white border-slate-300 hover:border-amber-550 hover:shadow-sm'
+                              }`}
                             >
-                              <span className="text-sm text-slate-200 group-hover:text-amber-500 font-medium">{item.name}</span>
-                              <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-amber-500 transition-opacity" />
+                              <span className={`text-sm font-semibold group-hover:text-amber-550 transition-colors ${
+                                isDarkMode ? 'text-slate-200' : 'text-slate-800'
+                              }`}>{item.name}</span>
+                              <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-amber-550 transition-opacity" />
                             </div>
                           ))}
                         </div>
                       </div>
 
                       {/* Tools & Cloud Column */}
-                      <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                        <span className="text-xs font-mono text-amber-500 uppercase tracking-widest font-semibold block mb-3 pb-2 border-b border-slate-800/80 flex items-center justify-between">
+                      <div className={`p-4 rounded-xl border transition-colors duration-300 ${
+                        isDarkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-100 border-slate-250'
+                      }`}>
+                        <span className={`text-xs font-mono text-amber-550 uppercase tracking-widest font-bold block mb-3 pb-2 border-b flex items-center justify-between ${
+                          isDarkMode ? 'border-slate-800/80 text-amber-500' : 'border-slate-300 text-amber-600'
+                        }`}>
                           Tools & Cloud
                           <Cloud className="w-3.5 h-3.5 text-amber-500" />
                         </span>
@@ -467,10 +613,16 @@ export default function App() {
                             <div 
                               key={item.name} 
                               onClick={() => handleSendMessage(undefined, `How has Riyaad integrated ${item.name} in his portfolio development?`)}
-                              className="group p-2.5 bg-slate-900 rounded-lg hover:border-amber-500 border border-slate-800 cursor-pointer flex justify-between items-center transition"
+                              className={`group p-2.5 rounded-lg border cursor-pointer flex justify-between items-center transition-all ${
+                                isDarkMode 
+                                  ? 'bg-slate-900 border-slate-800 hover:border-amber-500' 
+                                  : 'bg-white border-slate-300 hover:border-amber-550 hover:shadow-sm'
+                              }`}
                             >
-                              <span className="text-sm text-slate-200 group-hover:text-amber-500 font-medium">{item.name}</span>
-                              <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-amber-500 transition-opacity" />
+                              <span className={`text-sm font-semibold group-hover:text-amber-550 transition-colors ${
+                                isDarkMode ? 'text-slate-200' : 'text-slate-800'
+                              }`}>{item.name}</span>
+                              <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-amber-550 transition-opacity" />
                             </div>
                           ))}
                         </div>
@@ -478,8 +630,8 @@ export default function App() {
 
                     </div>
 
-                    <div className="mt-5 p-4 bg-amber-500/5 rounded-xl border border-amber-500/10 text-xs text-slate-400">
-                      💡 <span className="text-slate-300 font-medium">Interactive Matrix Tip:</span> Clicking on any technology above will send a request to his Recruiter AI Assistant directly in the chat window to clarify how he uses it!
+                    <div className="mt-5 p-4 bg-amber-500/5 rounded-xl border border-amber-500/10 text-xs text-slate-500">
+                      💡 <span className="text-slate-705 dark:text-slate-300 font-medium">Interactive Matrix Tip:</span> Clicking on any technology above will send a request to his Recruiter AI Assistant directly in the chat window to clarify how he uses it!
                     </div>
                   </div>
                 </motion.div>
@@ -495,19 +647,31 @@ export default function App() {
                   className="space-y-6"
                 >
                   {keyProjects.map(project => (
-                    <div key={project.title} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
+                    <div key={project.title} className={`border rounded-2xl p-6 relative overflow-hidden transition-colors duration-300 ${
+                      isDarkMode 
+                        ? 'bg-slate-900 border-slate-800' 
+                        : 'bg-white border-slate-300 shadow-md'
+                    }`}>
                       <div className="absolute right-0 top-0 bg-amber-500/10 text-amber-500 font-mono text-[9px] font-bold px-3 py-1 uppercase tracking-wider rounded-bl-xl border-l border-b border-amber-500/20">
                         Core Feature Project
                       </div>
 
-                      <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
-                      <p className="text-sm text-slate-300 leading-relaxed mb-4">
+                      <h3 className={`text-lg font-bold mb-2 ${
+                        isDarkMode ? 'text-white' : 'text-slate-900'
+                      }`}>{project.title}</h3>
+                      <p className={`text-sm leading-relaxed mb-4 ${
+                        isDarkMode ? 'text-slate-300' : 'text-slate-700'
+                      }`}>
                         {project.description}
                       </p>
 
                       <div className="flex flex-wrap gap-2 mb-6">
                         {project.tech.map(tech => (
-                          <span key={tech} className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-950 text-slate-300 border border-slate-800 font-mono">
+                          <span key={tech} className={`px-2.5 py-0.5 rounded-md text-xs font-semibold border font-mono ${
+                            isDarkMode 
+                              ? 'bg-slate-950 text-slate-300 border-slate-800' 
+                              : 'bg-slate-100 text-slate-700 border-slate-300'
+                          }`}>
                             {tech}
                           </span>
                         ))}
@@ -518,7 +682,7 @@ export default function App() {
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-lg transition"
+                          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-lg transition shadow-sm"
                           id="btn-project-link"
                         >
                           <Github className="w-3.5 h-3.5" />
@@ -528,7 +692,11 @@ export default function App() {
 
                         <button
                           onClick={() => handleSendMessage(undefined, `In detail, tell me about Riyaad's ${project.title} project and why he used React & Firebase.`)}
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition"
+                          className={`inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold rounded-lg border transition ${
+                            isDarkMode 
+                              ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700' 
+                              : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-300 shadow-sm'
+                          }`}
                           id="btn-project-ask"
                         >
                           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
@@ -549,17 +717,27 @@ export default function App() {
                   exit={{ opacity: 0, y: -10 }}
                   className="space-y-4"
                 >
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                    <h3 className="text-base font-bold text-white mb-6 uppercase tracking-wider font-display flex items-center gap-2">
+                  <div className={`border rounded-2xl p-6 transition-colors duration-300 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800' 
+                      : 'bg-white border-slate-300 shadow-md'
+                  }`}>
+                    <h3 className={`text-base font-bold mb-6 uppercase tracking-wider font-display flex items-center gap-2 ${
+                      isDarkMode ? 'text-white' : 'text-slate-900'
+                    }`}>
                       <GraduationCap className="w-5 h-5 text-amber-500" />
                       Academic Credentials
                     </h3>
 
-                    <div className="relative border-l-2 border-slate-800 pl-6 ml-2 space-y-6">
+                    <div className={`relative border-l-2 pl-6 ml-2 space-y-6 transition-colors duration-300 ${
+                      isDarkMode ? 'border-slate-800' : 'border-slate-250'
+                    }`}>
                       {educationList.map((edu, idx) => (
                         <div key={idx} className="relative">
                           {/* Circle dot Timeline index */}
-                          <span className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-amber-500 flex items-center justify-center" />
+                          <span className={`absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border-2 border-amber-500 flex items-center justify-center ${
+                            isDarkMode ? 'bg-slate-950' : 'bg-white'
+                          }`} />
                           
                           <div className="flex items-center justify-between gap-2">
                             <span className="font-mono text-xs text-amber-500 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
@@ -567,10 +745,14 @@ export default function App() {
                             </span>
                           </div>
                           
-                          <h4 className="text-sm font-bold text-white mt-2 leading-snug">
+                          <h4 className={`text-sm font-bold mt-2 leading-snug ${
+                            isDarkMode ? 'text-white' : 'text-slate-900'
+                          }`}>
                             {edu.degree}
                           </h4>
-                          <p className="text-xs text-slate-400 font-medium mt-0.5">
+                          <p className={`text-xs font-semibold mt-0.5 ${
+                            isDarkMode ? 'text-slate-400' : 'text-slate-650'
+                          }`}>
                             {edu.institution}
                           </p>
                         </div>
@@ -589,28 +771,52 @@ export default function App() {
                   exit={{ opacity: 0, y: -10 }}
                   className="space-y-4"
                 >
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                  <div className={`border rounded-2xl p-6 transition-colors duration-300 ${
+                    isDarkMode 
+                      ? 'bg-slate-900 border-slate-800' 
+                      : 'bg-white border-slate-300 shadow-md'
+                  }`}>
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-base font-bold text-white uppercase tracking-wider font-display flex items-center gap-2">
+                      <h3 className={`text-base font-bold uppercase tracking-wider font-display flex items-center gap-2 ${
+                        isDarkMode ? 'text-white' : 'text-slate-900'
+                      }`}>
                         <UserCheck className="w-5 h-5 text-amber-500" />
                         Verified References
                       </h3>
-                      <span className="text-[10px] font-mono text-amber-500/80 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md">
+                      <span className={`text-[10px] font-mono border px-2.5 py-1 rounded-md ${
+                        isDarkMode 
+                          ? 'text-amber-500/80 bg-slate-950 border-slate-800' 
+                          : 'text-amber-600 bg-slate-100 border-slate-300'
+                      }`}>
                         Amazon Web Services
                       </span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                       {referencesList.map((ref, idx) => (
-                        <div key={idx} className="p-4 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-slate-700 transition">
-                          <p className="text-sm font-bold text-white font-display">{ref.name}</p>
-                          <p className="text-xs text-slate-400 font-medium mt-0.5">{ref.role}</p>
+                        <div key={idx} className={`p-4 border rounded-xl transition-all ${
+                          isDarkMode 
+                            ? 'bg-slate-950/80 border-slate-800 hover:border-slate-700' 
+                            : 'bg-slate-50 border-slate-300 hover:border-slate-400 hover:shadow-sm'
+                        }`}>
+                          <p className={`text-sm font-bold font-display ${
+                            isDarkMode ? 'text-white' : 'text-slate-900'
+                          }`}>{ref.name}</p>
+                          <p className={`text-xs font-semibold mt-0.5 ${
+                            isDarkMode ? 'text-slate-400' : 'text-slate-600'
+                          }`}>{ref.role}</p>
                           
-                          <div className="mt-3.5 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
+                          <div className={`mt-3.5 pt-2.5 border-t flex items-center justify-between text-xs font-mono ${
+                            isDarkMode ? 'border-slate-800' : 'border-slate-200'
+                          }`}>
                             <span className="text-slate-500">Phone Contact:</span>
                             <button
                               onClick={() => handleCopy(ref.phone, ref.name)}
-                              className="text-amber-500 hover:underline hover:text-amber-400 transition flex items-center gap-1.5 p-1 bg-slate-900 border border-slate-800/65 rounded"
+                              className={`text-amber-500 hover:underline hover:text-amber-400 transition flex items-center gap-1.5 p-1 border rounded ${
+                                isDarkMode 
+                                  ? 'bg-slate-900 border-slate-800/65' 
+                                  : 'bg-white border-slate-300 shadow-sm'
+                              }`}
                               title="Copy phone to clipboard"
                             >
                               <Phone className="w-3 h-3" />
@@ -630,19 +836,29 @@ export default function App() {
         </section>
 
         {/* Right Workspace Panel: AI Assistant Chatbot (5 Cols) */}
-        <section className="lg:col-span-5 flex flex-col h-[650px] bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative" id="chat-panel">
+        <section className={`lg:col-span-5 flex flex-col h-[650px] border rounded-2xl overflow-hidden relative transition-colors duration-300 ${
+          isDarkMode 
+            ? 'bg-slate-900 border-slate-800 shadow-2xl' 
+            : 'bg-white border-slate-300 shadow-lg'
+        }`} id="chat-panel">
           
-          <div className="absolute right-0 top-0 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+          {isDarkMode && (
+            <div className="absolute right-0 top-0 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+          )}
 
           {/* Chat Window Title Bar */}
-          <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+          <div className={`p-4 border-b flex items-center justify-between transition-colors duration-300 ${
+            isDarkMode ? 'bg-slate-900/90 border-slate-800' : 'bg-slate-50 border-slate-250'
+          }`}>
             <div className="flex items-center gap-2.5">
               <div className="relative">
                 <span className="absolute right-0 bottom-0 block h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-900" />
                 <MessageSquare className="w-5 h-5 text-amber-500" />
               </div>
               <div>
-                <h2 className="text-sm font-bold text-white font-display">Riyaad's AI Assistant</h2>
+                <h2 className={`text-sm font-bold font-display ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                  Riyaad's AI Assistant
+                </h2>
                 <span className="text-[10px] text-slate-400 font-mono">Confidential Recruiter Screening Mode</span>
               </div>
             </div>
@@ -659,7 +875,9 @@ export default function App() {
                 ]);
                 setErrorNotice(null);
               }}
-              className="text-slate-400 hover:text-white transition p-1.5 hover:bg-slate-800 rounded-lg"
+              className={`transition p-1.5 rounded-lg ${
+                isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-205'
+              }`}
               title="Reset Message Thread"
               id="btn-chat-reset"
             >
@@ -668,7 +886,9 @@ export default function App() {
           </div>
 
           {/* Chat Thread Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/65 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+          <div className={`flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent ${
+            isDarkMode ? 'bg-slate-950/65' : 'bg-slate-50/50'
+          }`}>
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -677,10 +897,12 @@ export default function App() {
                 }`}
               >
                 <div
-                  className={`px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed ${
+                  className={`px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed border shadow-sm ${
                     msg.role === 'user'
-                      ? 'bg-amber-500 text-slate-950 font-medium rounded-tr-none shadow'
-                      : 'bg-slate-900 text-slate-200 border border-slate-800 rounded-tl-none shadow-md'
+                      ? 'bg-amber-500 text-slate-950 font-bold rounded-tr-none border-amber-600/20'
+                      : isDarkMode 
+                        ? 'bg-slate-900 text-slate-200 border-slate-800 rounded-tl-none' 
+                        : 'bg-white text-slate-800 border-slate-300 rounded-tl-none font-medium'
                   }`}
                 >
                   <p className="whitespace-pre-line">{msg.text}</p>
@@ -693,7 +915,9 @@ export default function App() {
 
             {isTyping && (
               <div className="flex flex-col items-start max-w-[85%]">
-                <div className="px-4 py-3 bg-slate-900 text-slate-200 rounded-2xl rounded-tl-none border border-slate-800 flex items-center gap-1.5">
+                <div className={`px-4 py-3 rounded-2xl rounded-tl-none border flex items-center gap-1.5 ${
+                  isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-350'
+                }`}>
                   <span className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '0ms' }} />
                   <span className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '150ms' }} />
                   <span className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -705,14 +929,20 @@ export default function App() {
           </div>
 
           {/* Suggestion Chips Box */}
-          <div className="p-3 bg-slate-900/60 border-t border-slate-800">
-            <span className="text-[10px] font-mono text-slate-400 block mb-2">💡 Interview Suggestion Prompts:</span>
+          <div className={`p-3 border-t transition-colors duration-300 ${
+            isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-slate-100/80 border-slate-250'
+          }`}>
+            <span className="text-[10px] font-mono text-slate-500 block mb-2 font-bold">💡 Interview Suggestion Prompts:</span>
             <div className="flex flex-wrap gap-1.5">
               {suggestions.map((s, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(undefined, s.query)}
-                  className="px-2.5 py-1.5 bg-slate-950 border border-slate-850 hover:border-amber-500 hover:text-amber-500 rounded-lg text-left text-[11px] text-slate-300 transition"
+                  className={`px-2.5 py-1.5 border rounded-lg text-left text-[11px] font-semibold transition ${
+                    isDarkMode 
+                      ? 'bg-slate-950 border-slate-800 hover:border-amber-500 text-slate-300 hover:text-amber-500' 
+                      : 'bg-white border-slate-300 hover:border-amber-550 text-slate-700 hover:text-amber-655 shadow-sm'
+                  }`}
                 >
                   {s.label}
                 </button>
@@ -729,13 +959,19 @@ export default function App() {
           )}
 
           {/* Message Input box */}
-          <form onSubmit={handleSendMessage} className="p-3.5 bg-slate-900 border-t border-slate-800 flex items-center gap-2">
+          <form onSubmit={handleSendMessage} className={`p-3.5 border-t flex items-center gap-2 transition-colors duration-300 ${
+            isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-105 border-slate-250'
+          }`}>
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Ask me something about Riyaad's AWS career..."
-              className="flex-1 bg-slate-950 text-slate-200 border border-slate-800 hover:border-slate-700 focus:border-amber-500 rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition font-sans"
+              className={`flex-1 rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition font-sans border ${
+                isDarkMode 
+                  ? 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700 focus:border-amber-500' 
+                  : 'bg-white text-slate-800 border-slate-300 hover:border-slate-400 focus:border-amber-500 shadow-sm'
+              }`}
               disabled={isTyping}
               id="chat-input-field"
             />
@@ -758,7 +994,11 @@ export default function App() {
       </main>
 
       {/* Footer Design */}
-      <footer className="bg-slate-950 border-t border-slate-900 py-6 mt-12 text-center text-xs text-slate-500">
+      <footer className={`border-t py-6 mt-12 text-center text-xs transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-slate-950 border-slate-900 text-slate-500' 
+          : 'bg-slate-100 border-slate-200 text-slate-500 font-medium'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p>© 2026 Riyaad Ryklief. Interactive Portfolio & Recruiter AI. All ground truths strictly guaranteed.</p>
         </div>
