@@ -72,7 +72,8 @@ export const workExperience: WorkExperience[] = [
           "Resolve complex issues related to Chime's voice, video, and messaging capabilities",
           "Troubleshoot network connectivity and integration challenges",
           "Support enterprise-scale deployments and configurations",
-          "Collaborate with engineering teams on platform improvements"
+          "Collaborate with engineering teams on platform improvements",
+          "Create and maintain internal and customer facing SOPs"
         ]
       },
       {
@@ -80,7 +81,8 @@ export const workExperience: WorkExperience[] = [
         bullets: [
           "Resolve complex issues related to data visualization, dashboard performance, and enterprise BI implementations",
           "Troubleshoot data connectivity and SPICE ingestion challenges",
-          "Guide customers through advanced feature implementations"
+          "Guide customers through advanced feature implementations",
+          "Create and maintain internal and customer facing SOPs"
         ]
       },
       {
@@ -89,7 +91,8 @@ export const workExperience: WorkExperience[] = [
           "Resolve complex telecommunications issues across global contact center implementations",
           "Support phone number provisioning, porting, and management",
           "Interface with telecommunications carriers for issue resolution",
-          "Monitor and maintain service level agreements (SLAs)"
+          "Monitor and maintain service level agreements (SLAs)",
+          "Create and maintain internal and customer facing SOPs"
         ]
       }
     ]
