@@ -46,6 +46,7 @@ export interface Project {
   description: string;
   tech: string[];
   link: string;
+  liveLink?: string;
 }
 
 export interface Reference {

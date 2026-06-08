@@ -102,6 +102,7 @@ export const keyProjects: Project[] = [
     description: 'A 3-tier Web Application that delivers streamlined details and records. Integrated with interactive user screens and cloud database synchronizations.',
     tech: ['HTML', 'CSS', 'JavaScript', 'React', 'Firebase'],
     link: 'https://github.com/RiyaadAWS/iDETAIL',
+    liveLink: 'https://www.idetail.co.za/',
   }
 ];
 

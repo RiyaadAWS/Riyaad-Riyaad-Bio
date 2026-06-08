@@ -29,7 +29,8 @@ import {
   ArrowRight,
   RefreshCw,
   Sun,
-  Moon
+  Moon,
+  Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { contactInfo, techStack, educationList, workExperience, keyProjects, referencesList } from './data';
@@ -677,7 +678,21 @@ export default function App() {
                         ))}
                       </div>
 
-                      <div className="flex flex-col sm:flex-row gap-2.5">
+                      <div className="flex flex-col sm:flex-row gap-2.5 flex-wrap">
+                        {project.liveLink && (
+                          <a
+                            href={project.liveLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-750 text-white text-xs font-bold rounded-lg transition shadow-sm"
+                            id="btn-project-live"
+                          >
+                            <Globe className="w-3.5 h-3.5" />
+                            <span>View Live Website</span>
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+
                         <a
                           href={project.link}
                           target="_blank"
