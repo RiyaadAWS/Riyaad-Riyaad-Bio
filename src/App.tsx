@@ -30,7 +30,8 @@ import {
   RefreshCw,
   Sun,
   Moon,
-  Globe
+  Globe,
+  Printer
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { contactInfo, techStack, educationList, workExperience, keyProjects, referencesList } from './data';
@@ -41,8 +42,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'experience' | 'skills' | 'projects' | 'education' | 'references'>('experience');
   const [selectedSubRole, setSelectedSubRole] = useState<number>(0);
   
-  // Theme Toggle: Defaults to true (Dark Ambient)
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  // Theme Toggle: Defaults to false (Light Ambient)
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   // Chatbot State
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -177,7 +178,7 @@ export default function App() {
     }`}>
       
       {/* Header Profile Cover Banner */}
-      <header className={`relative transition-colors duration-300 border-b overflow-hidden ${
+      <header className={`relative transition-colors duration-300 border-b overflow-hidden print:hidden ${
         isDarkMode 
           ? 'bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border-slate-800' 
           : 'bg-gradient-to-r from-slate-100 via-white to-slate-50 border-slate-200'
@@ -197,7 +198,7 @@ export default function App() {
             <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
               {/* Professional Initials Avatar Badge and Ring */}
               <div className="relative flex-shrink-0 group">
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 opacity-75 blur group-hover:opacity-100 transition duration-300" />
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 opacity-75 blur group-hover:opacity-100 transition duration-305" />
                 <div className={`relative w-24 h-24 rounded-full border-2 flex items-center justify-center text-amber-500 font-display font-bold text-3xl transition-colors duration-350 ${
                   isDarkMode 
                     ? 'bg-slate-900 border-slate-800' 
@@ -215,7 +216,7 @@ export default function App() {
                     Riyaad Ryklief
                   </h1>
                   
-                  <div className="flex items-center gap-2 max-w-max mx-auto sm:mx-0">
+                  <div className="flex items-center gap-2 max-w-max mx-auto sm:mx-0 flex-wrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20">
                       8 Years AWS Specialist
                     </span>
@@ -226,7 +227,7 @@ export default function App() {
                       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-mono font-bold tracking-tight transition-all duration-300 shadow-sm ${
                         isDarkMode 
                           ? 'bg-slate-905 border-slate-750 text-amber-500 hover:border-amber-500 hover:bg-slate-800' 
-                          : 'bg-white border-slate-300 text-slate-700 hover:border-amber-500 hover:bg-slate-100'
+                          : 'bg-white border-slate-300 text-slate-700 hover:border-amber-550 hover:bg-slate-100'
                       }`}
                       id="theme-toggle-btn"
                       title="Toggle high-contrast light mode / ambient dark mode"
@@ -243,6 +244,22 @@ export default function App() {
                           <span>DARK MODE</span>
                         </>
                       )}
+                    </button>
+
+                    {/* Print Portfolio Button */}
+                    <button
+                      onClick={() => window.print()}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-mono font-bold tracking-tight transition-all duration-300 shadow-sm ${
+                        isDarkMode 
+                          ? 'bg-slate-905 border-slate-750 text-amber-500 hover:border-amber-500 hover:bg-slate-800' 
+                          : 'bg-white border-slate-300 text-slate-700 hover:border-amber-550 hover:bg-slate-100'
+                      }`}
+                      id="print-portfolio-btn"
+                      title="Print Portfolio / PDF Resume"
+                      aria-label="Print portfolio as professional PDF resume"
+                    >
+                      <Printer className="w-3 h-3 text-amber-500" />
+                      <span>PRINT RESUME</span>
                     </button>
                   </div>
                 </div>
@@ -348,7 +365,7 @@ export default function App() {
       </header>
 
       {/* Main Container Workspace Grid */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 print:hidden">
         
         {/* Left Workspace Panel: Interactive Resume Console (7 Cols) */}
         <section className="lg:col-span-7 space-y-6 flex flex-col" id="resume-panel">
@@ -1009,7 +1026,7 @@ export default function App() {
       </main>
 
       {/* Footer Design */}
-      <footer className={`border-t py-6 mt-12 text-center text-xs transition-colors duration-300 ${
+      <footer className={`border-t py-6 mt-12 text-center text-xs transition-colors duration-300 print:hidden ${
         isDarkMode 
           ? 'bg-slate-950 border-slate-900 text-slate-500' 
           : 'bg-slate-100 border-slate-200 text-slate-500 font-medium'
@@ -1018,6 +1035,167 @@ export default function App() {
           <p>© 2026 Riyaad Ryklief. Interactive Portfolio & Recruiter AI. All ground truths strictly guaranteed.</p>
         </div>
       </footer>
+
+      {/* Printable Resume Container (Only visible during physical print or PDF creation) */}
+      <div className="hidden print:block font-sans text-slate-950 bg-white" id="print-resume-container">
+        {/* Header Section */}
+        <div className="border-b-2 border-slate-900 pb-4 mb-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900 font-display">
+                Riyaad Ryklief
+              </h1>
+              <p className="text-sm font-semibold text-amber-600 mt-1">
+                Technical Support Specialist | Applications Developer (AWS Specialist)
+              </p>
+              <p className="text-xs text-slate-500 mt-1 font-mono">
+                Cape Town, South Africa
+              </p>
+            </div>
+            <div className="text-right text-[11px] font-mono space-y-1 text-slate-700">
+              <p className="font-bold text-slate-900 text-xs">CONTACT DETAILS</p>
+              <p>Email: {contactInfo.email}</p>
+              <p>Phone: {contactInfo.phones.join(' / ')}</p>
+              <p className="no-print-url">LinkedIn: linkedin.com/in/riyaadryklief</p>
+              <p className="no-print-url">GitHub: github.com/RiyaadAWS</p>
+              <p className="no-print-url">Live: www.idetail.co.za</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Executive Profile Section */}
+        <div className="mb-6 print-avoid-break">
+          <h2 className="text-xs font-mono tracking-widest font-bold uppercase border-b border-slate-400 pb-1 mb-2.5 text-slate-900">
+            Executive Profile
+          </h2>
+          <p className="text-xs leading-relaxed text-slate-750">
+            With 8 years at AWS, I've built extensive expertise in enterprise collaboration and business intelligence platforms, specializing in Amazon Chime, QuickSight, and telecom services. My Computer Science credentials with a focus in Applications Development complements my hands-on AWS experience, where I've delivered comprehensive technical support across all tiers.
+          </p>
+        </div>
+
+        {/* Work Experience Section */}
+        <div className="mb-6 print-avoid-break">
+          <h2 className="text-xs font-mono tracking-widest font-bold uppercase border-b border-slate-400 pb-1 mb-3 text-slate-900">
+            Professional Work Experience
+          </h2>
+          <div className="space-y-4">
+            {workExperience.map((work, idx) => (
+              <div key={idx} className="print-avoid-break">
+                <div className="flex justify-between items-baseline mb-0.5">
+                  <span className="font-bold text-xs text-slate-900 uppercase">{work.company}</span>
+                  <span className="font-mono text-[10px] text-slate-600 font-medium">{work.period}</span>
+                </div>
+                <div className="text-xs font-semibold text-amber-700 font-mono mb-2">{work.role}</div>
+                <p className="text-xs text-slate-700 mb-3 leading-relaxed">{work.description}</p>
+                
+                {/* AWS Specialties */}
+                <div className="space-y-3.5 pl-3 border-l-2 border-amber-500/30">
+                  {work.subRoles.map((role, rIdx) => (
+                    <div key={rIdx} className="print-avoid-break">
+                      <h4 className="text-[11px] font-bold text-slate-800 uppercase font-mono mb-1 tracking-tight">
+                        AWS Domain Specialty: {role.title}
+                      </h4>
+                      <ul className="list-disc list-inside text-xs text-slate-750 pl-2 space-y-1">
+                        {role.bullets.map((bullet, bIdx) => (
+                          <li key={bIdx} className="leading-normal">{bullet}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Technical stack matrix */}
+        <div className="mb-6 print-avoid-break">
+          <h2 className="text-xs font-mono tracking-widest font-bold uppercase border-b border-slate-400 pb-1 mb-3 text-slate-900">
+            Technical Stack Matrix
+          </h2>
+          <div className="grid grid-cols-3 gap-4 text-xs">
+            <div className="border border-slate-150 p-2.5 rounded-lg bg-slate-50/50">
+              <p className="font-bold font-mono text-amber-700 text-[10px] tracking-wider uppercase border-b border-slate-200 pb-1 mb-2">Frontend Tier</p>
+              <ul className="space-y-1 pl-1 list-none text-slate-800 text-[11px]">
+                {techStack.frontend.map(item => <li key={item.name} className="flex items-center gap-1.5"><span>▪</span> {item.name}</li>)}
+              </ul>
+            </div>
+            <div className="border border-slate-150 p-2.5 rounded-lg bg-slate-50/50">
+              <p className="font-bold font-mono text-amber-700 text-[10px] tracking-wider uppercase border-b border-slate-200 pb-1 mb-2">Backend Tier</p>
+              <ul className="space-y-1 pl-1 list-none text-slate-800 text-[11px]">
+                {techStack.backend.map(item => <li key={item.name} className="flex items-center gap-1.5"><span>▪</span> {item.name}</li>)}
+              </ul>
+            </div>
+            <div className="border border-slate-150 p-2.5 rounded-lg bg-slate-50/50">
+              <p className="font-bold font-mono text-amber-700 text-[10px] tracking-wider uppercase border-b border-slate-200 pb-1 mb-2">Tools & Cloud</p>
+              <ul className="space-y-1 pl-1 list-none text-slate-800 text-[11px]">
+                {techStack.toolsCloud.map(item => <li key={item.name} className="flex items-center gap-1.5"><span>▪</span> {item.name}</li>)}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Featured Projects */}
+        <div className="mb-6 print-avoid-break">
+          <h2 className="text-xs font-mono tracking-widest font-bold uppercase border-b border-slate-400 pb-1 mb-3 text-slate-900">
+            Featured Projects
+          </h2>
+          <div className="space-y-3.5">
+            {keyProjects.map((p, pIdx) => (
+              <div key={pIdx} className="border border-slate-200 rounded-xl p-3 bg-slate-50/20 print-avoid-break">
+                <div className="flex justify-between items-baseline mb-1">
+                  <h4 className="font-bold text-xs text-slate-900">{p.title}</h4>
+                  <div className="text-[10px] font-mono text-slate-500 font-semibold">
+                    Tech: {p.tech.join(', ')}
+                  </div>
+                </div>
+                <p className="text-xs text-slate-700 mb-2 leading-relaxed">{p.description}</p>
+                <div className="flex flex-col sm:flex-row gap-x-6 gap-y-1 text-[10px] font-mono text-slate-600">
+                  <span className="no-print-url">Repo: github.com/RiyaadAWS/iDETAIL</span>
+                  {p.liveLink && <span className="no-print-url">Live: www.idetail.co.za</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Education Credentials */}
+        <div className="mb-6 print-avoid-break">
+          <h2 className="text-xs font-mono tracking-widest font-bold uppercase border-b border-slate-400 pb-1 mb-3 text-slate-900">
+            Academic Credentials
+          </h2>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs">
+            {educationList.map((edu, eIdx) => (
+              <div key={eIdx} className="flex justify-between items-baseline py-1.5 border-b border-slate-100 print-avoid-break">
+                <div>
+                  <span className="font-bold text-slate-900 text-[11px] block">{edu.degree}</span>
+                  <span className="text-slate-500 text-[10px] block leading-tight">{edu.institution}</span>
+                </div>
+                <span className="font-mono text-slate-600 text-[10px] whitespace-nowrap">{edu.year}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Verified References */}
+        <div className="print-avoid-break">
+          <h2 className="text-xs font-mono tracking-widest font-bold uppercase border-b border-slate-400 pb-1 mb-3 text-slate-900">
+            Professional References
+          </h2>
+          <div className="grid grid-cols-3 gap-3 text-xs">
+            {referencesList.map((ref, rIdx) => (
+              <div key={rIdx} className="print-avoid-break border border-slate-200 p-2.5 rounded-lg bg-slate-50/10">
+                <p className="font-bold text-slate-900 text-[11px]">{ref.name}</p>
+                <p className="text-slate-500 text-[9px] font-medium leading-tight">{ref.role}</p>
+                <p className="text-slate-700 text-[10px] font-mono mt-1 pt-1 border-t border-slate-100">
+                  Phone: {ref.phone}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
 
     </div>
   );

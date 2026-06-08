@@ -11,3 +11,36 @@ body {
   font-family: var(--font-sans);
 }
 
+@media print {
+  @page {
+    size: A4;
+    margin: 1.6cm 1.6cm;
+  }
+  
+  body {
+    background: #ffffff !important;
+    color: #0d1527 !important;
+    font-family: "Inter", var(--font-sans) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Prevent page breaks from slicing in the middle of sections */
+  .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Clean up link prints but don't show full ugly URLs in titles */
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75rem;
+    color: #4b5563;
+  }
+  
+  /* Suppress href prints for buttons where we don't need them or links that are decorative */
+  .no-print-url::after {
+    content: "" !important;
+  }
+}
+
