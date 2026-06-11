@@ -33,7 +33,7 @@ export const techStack: TechStack = {
 
 export const educationList: Education[] = [
   {
-    degree: 'AI Website Development',
+    degree: 'AI Web Development',
     institution: 'Completed',
     year: '2026',
   },

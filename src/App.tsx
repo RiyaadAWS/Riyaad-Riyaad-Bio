@@ -62,13 +62,21 @@ export default function App() {
   const [copiedText, setCopiedText] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
 
   // Auto-scroll chat
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     scrollToBottom();
   }, [messages, isTyping]);
 
@@ -378,7 +386,7 @@ export default function App() {
           }`}>
             <div className="absolute left-0 top-0 h-full w-1.5 bg-gradient-to-b from-amber-500 to-amber-600" />
             <span className="text-xs font-mono text-amber-500 font-semibold tracking-wider uppercase mb-2 block">Executive Profile</span>
-            <p className={`text-sm leading-relaxed transition-colors duration-350 ${
+            <p className={`text-sm leading-relaxed text-justify transition-colors duration-350 ${
               isDarkMode ? 'text-slate-300' : 'text-slate-700'
             }`}>
               With 8 years at AWS, I've built extensive expertise in enterprise collaboration and business intelligence platforms, specializing in Amazon Chime, QuickSight, and telecom services. My Computer Science credentials with a focus in Applications Development complements my hands-on AWS experience, where I've delivered comprehensive technical support across all tiers.
@@ -918,7 +926,7 @@ export default function App() {
           </div>
 
           {/* Chat Thread Area */}
-          <div className={`flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent ${
+          <div ref={chatContainerRef} className={`flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent ${
             isDarkMode ? 'bg-slate-950/65' : 'bg-slate-50/50'
           }`}>
             {messages.map((msg) => (
@@ -1068,7 +1076,7 @@ export default function App() {
           <h2 className="text-xs font-mono tracking-widest font-bold uppercase border-b border-slate-400 pb-1 mb-2.5 text-slate-900">
             Executive Profile
           </h2>
-          <p className="text-xs leading-relaxed text-slate-750">
+          <p className="text-xs leading-relaxed text-justify text-slate-750">
             With 8 years at AWS, I've built extensive expertise in enterprise collaboration and business intelligence platforms, specializing in Amazon Chime, QuickSight, and telecom services. My Computer Science credentials with a focus in Applications Development complements my hands-on AWS experience, where I've delivered comprehensive technical support across all tiers.
           </p>
         </div>
